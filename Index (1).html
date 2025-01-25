@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeri dengan Mode Gelap/Terang</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            color: #333;
+            text-align: center;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        header {
+            padding: 20px;
+            background-color: #333;
+            color: white;
+        }
+        button {
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #555;
+        }
+        .full-image img {
+            width: 100%;
+            max-width: 1200px;
+            height: auto;
+        }
+        .full-image p {
+            font-size: 18px;
+            color: #666;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            padding: 10px;
+        }
+        .gallery img {
+            width: 100%;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        footer {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+        }
+        .dark-mode {
+            background-color: #333;
+            color: #fff;
+        }
+        .dark-mode header {
+            background-color: #222;
+        }
+        .dark-mode button {
+            background-color: #fff;
+            color: #333;
+        }
+        .dark-mode footer {
+            background-color: #222;
+        }
+        .hidden {
+            display: none;
+        }
+        .upload-form {
+            margin-top: 20px;
+            text-align: left;
+            padding: 10px;
+            background-color: #f4f4f9;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .upload-form input[type="file"] {
+            margin-bottom: 10px;
+        }
+        .upload-form button {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .upload-form button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Galeri dengan Mode Gelap/Terang</h1>
+        <button onclick="toggleDarkMode()">Mode Gelap/Terang</button>
+        <button onclick="togglePage()">Ke Galeri</button>
+        <button onclick="toggleUploadForm()">Upload Gambar</button>
+    </header>
+
+    <!-- Halaman 1 - Gambar Besar -->
+    <div id="page1" class="page">
+        <div class="full-image">
+            <img src="https://via.placeholder.com/1200x800" alt="Gambar Besar">
+            <p>Deskripsi Gambar Besar</p>
+        </div>
+    </div>
+
+    <!-- Halaman 2 - Galeri Gambar -->
+    <div id="page2" class="page hidden">
+        <div class="gallery">
+            <!-- Gambar akan ditambahkan di sini -->
+        </div>
+    </div>
+
+    <!-- Form Upload Gambar -->
+    <div id="uploadForm" class="upload-form hidden">
+        <h3>Upload Gambar Baru</h3>
+        <input type="file" id="imageUpload" accept="image/*">
+        <button onclick="uploadImage()">Upload Gambar</button>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Galeri Sederhana</p>
+    </footer>
+
+    <script>
+        // Menangani Mode Gelap/Terang
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        // Menangani pergantian halaman
+        function togglePage() {
+            const page1 = document.getElementById('page1');
+            const page2 = document.getElementById('page2');
+            page1.classList.toggle('hidden');
+            page2.classList.toggle('hidden');
+        }
+
+        // Menampilkan dan menyembunyikan form upload
+        function toggleUploadForm() {
+            const uploadForm = document.getElementById('uploadForm');
+            uploadForm.classList.toggle('hidden');
+        }
+
+        // Menambahkan gambar ke halaman galeri
+        const gallery = document.querySelector('.gallery');
+        const images = [
+            { src: 'https://via.placeholder.com/300', alt: 'Gambar 1', description: 'Deskripsi gambar 1' },
+            { src: 'https://via.placeholder.com/300', alt: 'Gambar 2', description: 'Deskripsi gambar 2' },
+            { src: 'https://via.placeholder.com/300', alt: 'Gambar 3', description: 'Deskripsi gambar 3' },
+            { src: 'https://via.placeholder.com/300', alt: 'Gambar 4', description: 'Deskripsi gambar 4' }
+        ];
+
+        // Menambahkan gambar dan deskripsi ke dalam galeri
+        images.forEach(image => {
+            const div = document.createElement('div');
+            div.classList.add('gallery-item');
+            
+            const img = document.createElement('img');
+            img.src = image.src;
+            img.alt = image.alt;
+
+            const p = document.createElement('p');
+            p.textContent = image.description;
+
+            div.appendChild(img);
+            div.appendChild(p);
+            gallery.appendChild(div);
+        });
+
+        // Fungsi untuk upload gambar
+        function uploadImage() {
+            const fileInput = document.getElementById('imageUpload');
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const div = document.createElement('div');
+                    div.classList.add('gallery-item');
+                    
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.alt = file.name;
+
+                    const p = document.createElement('p');
+                    p.textContent = file.name;
+
+                    div.appendChild(img);
+                    div.appendChild(p);
+                    gallery.appendChild(div);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+</body>
+</html>
